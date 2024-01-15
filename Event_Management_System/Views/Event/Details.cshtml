@@ -1,0 +1,95 @@
+﻿@model Event
+
+<h2>Details</h2>
+
+<div>
+    <h4>Event</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Time)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Time)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventCategory)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventCategory.Name)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Organizer.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Organizer.FirstName)
+        </dd>
+
+
+        <dt class="col-sm-2">
+            Participate
+        </dt>
+        <dd class="col-sm-10">
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <p>Please log in to participate</p>
+            }
+            else if (ViewBag.HasParticipated)
+            {
+                <p>You have already participated in this event</p>
+            }
+            else
+            {
+                <form asp-controller="Participant" asp-action="Create" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="EventId" value="@Model.Id" />
+                    <div class="form-group">
+                        <input type="submit" value="Participate" class="btn btn-primary" />
+                    </div>
+                </form>
+            }
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <h4>Participants</h4>
+    <hr />
+    <p>
+        Number of Participants: @Model.Participants?.Count()
+    </p>
+</div>
+
+<p>
+    <a asp-action="Index">Back to List</a>
+</p>

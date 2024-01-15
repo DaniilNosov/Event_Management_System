@@ -1,0 +1,41 @@
+﻿@model Dictionary<string, int>
+
+<h2>Participants Chart</h2>
+<canvas id="participantsChart" width="400" height="200"></canvas>
+
+<script>
+    async function fetchData() {
+        const response = await fetch('/api/Chart/GetParticipantsDataAsync');
+        const data = await response.json();
+        return data;
+    }
+
+    // Function to render the chart
+    async function renderChart() {
+        var participantsData = await fetchData();
+
+        var ctx = document.getElementById('participantsChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(participantsData),
+                datasets: [{
+                    label: 'Participants Count',
+                    data: Object.values(participantsData),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    renderChart();
+</script>
